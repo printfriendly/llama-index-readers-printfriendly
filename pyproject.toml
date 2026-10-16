@@ -1,0 +1,120 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llama-index-readers-printfriendly"
+version = "0.1.0"
+description = "llama-index readers printfriendly integration: load any web page as clean, ad-free Markdown"
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "PrintFriendly" }]
+maintainers = [{ name = "PrintFriendly" }]
+keywords = [
+    "article",
+    "llamaindex",
+    "markdown",
+    "printfriendly",
+    "rag",
+    "reader",
+    "scraper",
+    "url",
+    "web",
+    "web reader",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Typing :: Typed",
+]
+dependencies = [
+    "llama-index-core>=0.13.0,<0.15",
+    "httpx>=0.27.0,<1.0.0",
+]
+
+[project.urls]
+Homepage = "https://www.printfriendly.com/api"
+Documentation = "https://github.com/printfriendly/llama-index-readers-printfriendly#readme"
+Repository = "https://github.com/printfriendly/llama-index-readers-printfriendly"
+Issues = "https://github.com/printfriendly/llama-index-readers-printfriendly/issues"
+Changelog = "https://github.com/printfriendly/llama-index-readers-printfriendly/blob/main/CHANGELOG.md"
+"API reference" = "https://www.printfriendly.com/openapi.json"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "pytest-socket>=0.7",
+    "respx>=0.22",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "codespell>=2.3",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["llama_index/", "tests/", "README.md", "LICENSE", "CHANGELOG.md"]
+exclude = ["**/BUILD"]
+
+[tool.hatch.build.targets.wheel]
+include = ["llama_index/"]
+exclude = ["**/BUILD"]
+
+# Read by llamahub.ai in the LlamaIndex monorepo layout. Harmless elsewhere.
+[tool.llamahub]
+contains_example = false
+import_path = "llama_index.readers.printfriendly"
+
+[tool.llamahub.class_authors]
+PrintFriendlyReader = "printfriendly"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "T201", "D"]
+ignore = ["D203", "D213", "D107"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+namespace_packages = true
+explicit_package_bases = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+python_version = "3.10"
+exclude = ["build", "examples", "venv"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config --durations=5"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "live: calls the real PrintFriendly API and uses documents from the key's plan (opt-in, needs PRINTFRIENDLY_API_KEY)",
+]
+
+[tool.coverage.run]
+omit = ["tests/*"]
+source = ["llama_index"]
+
+[tool.codespell]
+check-filenames = true
+check-hidden = true
+skip = "uv.lock,.venv,.git"
